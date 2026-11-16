@@ -1,0 +1,6 @@
+$ ls -l <vdmj-root>/vdmj-suite-4.7.0-260414/vdmj.sh
+-rwxr-xr-x@ 1 <user>  staff  248 Oct  8 12:51 <vdmj-root>/vdmj-suite-4.7.0-260414/vdmj.sh
+exit=0
+$ <vdmj-root>/vdmj-suite-4.7.0-260414/vdmj.sh -v
+VDMJ version = 4.7.0 build 260414
+exit=0

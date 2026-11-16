@@ -1,0 +1,44 @@
+Parsed 1 module in 0.026 secs. No syntax errors
+Type checked 1 module in 0.047 secs. No type errors
+Initialized 1 module in 0.069 secs. No init errors
+PO #1, PROVABLE by direct (body is total) in 0.003s
+PO #2, PROVABLE by witness in 0.0s
+Witness:
+Title: invariant satisfiability obligation in 'TaskManager' (<trial-root>/t1-vitest-r2/TaskManager.vdmsl) at line 16:5
+exists t : seq1 of char & ((len t) <= 100)
+--> t = "a"
+--> returns true
+
+PO #3, MAYBE in 0.002s
+PO #4, PROVABLE by trivial id in set (dom tasks) in 0.001s
+PO #5, PROVABLE by witness in 0.001s
+Witness:
+TaskStore: invariant satisfiability obligation in 'TaskManager' (<trial-root>/t1-vitest-r2/TaskManager.vdmsl) at line 27:5
+exists mk_TaskStore(tasks, nextId) : TaskStore & (forall id in set (dom tasks) & (((tasks(id).id) = id) and (id < nextId)))
+--> tasks = {|->}, nextId = 1
+--> returns true
+
+PO #6, PROVABLE by witness in 0.001s
+Witness:
+TaskStore: state init obligation in 'TaskManager' (<trial-root>/t1-vitest-r2/TaskManager.vdmsl) at line 30:6
+exists s : TaskStore & (s = mk_TaskStore({|->}, 1))
+--> s = mk_TaskStore({|->}, 1)
+--> returns true
+
+PO #7, MAYBE in 0.042s
+PO #8, MAYBE in 0.003s
+PO #9, MAYBE in 0.003s
+PO #10, MAYBE in 0.002s
+PO #11, PROVABLE by direct (body is total) in 0.001s
+PO #12, MAYBE in 0.008s
+PO #13, MAYBE in 0.003s
+PO #14, MAYBE in 0.002s
+PO #15, MAYBE in 0.003s
+PO #16, PROVABLE by direct (body is total) in 0.0s
+PO #17, PROVABLE by direct (body is total) in 0.001s
+PO #18, MAYBE in 0.001s
+PO #19, MAYBE in 0.001s
+PO #20, MAYBE in 0.004s
+PO #21, PROVABLE by trivial id in set (dom tasks) in 0.0s
+PO #22, MAYBE in 0.001s
+Bye

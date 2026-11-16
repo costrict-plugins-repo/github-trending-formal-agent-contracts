@@ -1,0 +1,77 @@
+module TaskManager
+
+exports all
+
+definitions
+
+types
+
+-- タスクID：1から順に発行する
+TaskId = nat1;
+
+-- ステータス：未着手 = <NotStarted>、進行中 = <InProgress>、完了 = <Done>
+TaskStatus = <NotStarted> | <InProgress> | <Done>;
+
+-- タイトルは1文字以上100文字以下
+Title = seq1 of char
+inv t == len t <= 100;
+
+Task ::
+  id     : TaskId
+  title  : Title
+  status : TaskStatus;
+
+-- 状態：タスクの表と、次に発行するID
+state TaskStore of
+  tasks  : map TaskId to Task
+  nextId : TaskId
+inv mk_TaskStore(tasks, nextId) ==
+  forall id in set dom tasks &
+    tasks(id).id = id and id < nextId
+init s == s = mk_TaskStore({|->}, 1)
+end
+
+operations
+
+-- タスク作成：IDは nextId から発行し、nextId は増やすだけ（削除したIDを再利用しない）。
+-- 作成直後のステータスは未着手。同じタイトルのタスクを複数作れる
+CreateTask : Title ==> TaskId
+CreateTask(title) ==
+  let id = nextId in (
+    -- 2つの代入の途中で状態不変式（id < nextId）が破れないよう atomic でまとめる
+    atomic(
+      tasks := tasks munion {id |-> mk_Task(id, title, <NotStarted>)};
+      nextId := nextId + 1
+    );
+    return id
+  )
+post RESULT = nextId~ and
+     nextId = nextId~ + 1 and
+     tasks = tasks~ munion {RESULT |-> mk_Task(RESULT, title, <NotStarted>)};
+
+-- ステータス変更：どの状態からどの状態へも変更できる（同じ状態への変更も可）。
+-- 存在しないタスクは変更できない
+UpdateStatus : TaskId * TaskStatus ==> ()
+UpdateStatus(id, newStatus) ==
+  tasks := tasks ++ {id |-> mu(tasks(id), status |-> newStatus)}
+pre id in set dom tasks
+post tasks = tasks~ ++ {id |-> mu(tasks~(id), status |-> newStatus)} and
+     nextId = nextId~;
+
+-- 削除：存在しないタスクは削除できない。他のタスクと次のIDは変わらない
+DeleteTask : TaskId ==> ()
+DeleteTask(id) ==
+  tasks := {id} <-: tasks
+pre id in set dom tasks
+post tasks = {id} <-: tasks~ and nextId = nextId~;
+
+-- 一覧取得：ID昇順。状態は変えない
+ListTasks : () ==> seq of Task
+ListTasks() ==
+  return [tasks(id) | id in set dom tasks]
+post tasks = tasks~ and nextId = nextId~ and
+     elems RESULT = rng tasks~ and
+     len RESULT = card dom tasks~ and
+     (forall i in set inds RESULT & i > 1 => RESULT(i - 1).id < RESULT(i).id);
+
+end TaskManager

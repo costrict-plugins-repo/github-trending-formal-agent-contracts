@@ -1,0 +1,15 @@
+$ ls *.vdmsl
+TaskManager.vdmsl
+exit=0
+$ grep -n "^module" TaskManager.vdmsl
+1:module TaskManager
+$ ls verification.json evidence PROTOCOL.md API-SIGNATURES.md
+ls: API-SIGNATURES.md: No such file or directory
+ls: PROTOCOL.md: No such file or directory
+ls: evidence: No such file or directory
+ls: verification.json: No such file or directory
+exit=1
+$ wc -l; file; shasum
+      77 TaskManager.vdmsl
+TaskManager.vdmsl: Ruby script text, Unicode text, UTF-8 text
+6fca19820f8a1acc11560a97b32478d9a892c55eb0eaf4930cae22901acf416e  TaskManager.vdmsl

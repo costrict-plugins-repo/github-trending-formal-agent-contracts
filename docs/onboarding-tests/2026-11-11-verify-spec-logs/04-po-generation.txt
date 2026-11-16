@@ -1,0 +1,144 @@
+Parsed 1 module in 0.024 secs. No syntax errors
+Type checked 1 module in 0.048 secs. No type errors
+Generated 22 proof obligations:
+
+Proof Obligation 1: (Unproved)
+Title: total function obligation in 'TaskManager' (TaskManager.vdmsl) at line 17:5
+(forall t:Title! &
+  is_(inv_Title(t), bool))
+
+Proof Obligation 2: (Unproved)
+Title: invariant satisfiability obligation in 'TaskManager' (TaskManager.vdmsl) at line 17:5
+exists t : seq1 of char & ((len t) <= 100)
+
+Proof Obligation 3: (Unproved)
+TaskStore: total function obligation in 'TaskManager' (TaskManager.vdmsl) at line 28:5
+(forall mk_TaskStore(tasks, nextId):TaskStore! &
+  is_(inv_TaskStore(mk_TaskStore!(tasks, nextId)), bool))
+
+Proof Obligation 4: (Unproved)
+TaskStore: map apply obligation in 'TaskManager' (TaskManager.vdmsl) at line 30:5
+(forall mk_TaskStore(tasks, nextId):TaskStore! &
+  (forall id in set (dom tasks) &
+    id in set dom tasks))
+
+Proof Obligation 5: (Unproved)
+TaskStore: invariant satisfiability obligation in 'TaskManager' (TaskManager.vdmsl) at line 28:5
+exists mk_TaskStore(tasks, nextId) : TaskStore & (forall id in set (dom tasks) & (((tasks(id).id) = id) and (id < nextId)))
+
+Proof Obligation 6: (Unproved)
+TaskStore: state init obligation in 'TaskManager' (TaskManager.vdmsl) at line 31:6
+exists s : TaskStore & (s = mk_TaskStore({|->}, 1))
+
+Proof Obligation 7: (Unproved)
+CreateTask; post_CreateTask: total function obligation in 'TaskManager' (TaskManager.vdmsl) at line 48:23
+(forall title:Title, RESULT:TaskId, oldTaskStore:TaskStore, TaskStore:TaskStore &
+  is_(post_CreateTask(title, RESULT, oldTaskStore, TaskStore), bool))
+
+Proof Obligation 8: (Unproved)
+CreateTask: map compatible obligation in 'TaskManager' (TaskManager.vdmsl) at line 43:16
+(forall title:Title, mk_TaskStore(tasks, nextId):TaskStore &
+  (let tasks$ = tasks, nextId$ = nextId in
+    (let id : TaskId = nextId in
+      forall ldom1 in set dom tasks, rdom2 in set dom {id |-> mk_Task(id, title, <NotStarted>)} & ldom1 = rdom2 => tasks(ldom1) = {id |-> mk_Task(id, title, <NotStarted>)}(rdom2))))
+
+Proof Obligation 9: (Unproved)
+CreateTask: state invariant obligation in 'TaskManager' (TaskManager.vdmsl) at line 43:7
+(forall title:Title, mk_TaskStore(tasks, nextId):TaskStore &
+  (let tasks$ = tasks, nextId$ = nextId in
+    (let id : TaskId = nextId in
+      (let $atomic1 : map TaskId to Task = (tasks munion {id |-> mk_Task(id, title, <NotStarted>)}) in
+        (let $atomic2 : TaskId = (nextId + 1) in
+          (let tasks : map TaskId to Task = $atomic1 in
+            (let nextId : TaskId = $atomic2 in
+              let mk_TaskStore(tasks, nextId) = mk_TaskStore!(tasks, nextId) in (forall id in set (dom tasks) & (((tasks(id).id) = id) and (id < nextId))))))))))
+
+Proof Obligation 10: (Unproved)
+CreateTask: operation postcondition obligation in 'TaskManager' (TaskManager.vdmsl) at line 48:23
+(forall title:Title, mk_TaskStore(tasks, nextId):TaskStore &
+  (let tasks$ = tasks, nextId$ = nextId in
+    (let id : TaskId = nextId in
+      (let $atomic1 : map TaskId to Task = (tasks munion {id |-> mk_Task(id, title, <NotStarted>)}) in
+        (let $atomic2 : TaskId = (nextId + 1) in
+          (let tasks : map TaskId to Task = $atomic1 in
+            (let nextId : TaskId = $atomic2 in
+              (let RESULT : TaskId = id in
+                ((RESULT = nextId$) and ((nextId = (nextId$ + 1)) and (tasks = (tasks$ munion {RESULT |-> mk_Task(RESULT, title, <NotStarted>)}))))))))))))
+
+Proof Obligation 11: (Unproved)
+UpdateStatus; pre_UpdateStatus: total function obligation in 'TaskManager' (TaskManager.vdmsl) at line 57:8
+(forall id:TaskId, newStatus:TaskStatus, oldTaskStore:TaskStore &
+  is_(pre_UpdateStatus(id, newStatus, oldTaskStore), bool))
+
+Proof Obligation 12: (Unproved)
+UpdateStatus; post_UpdateStatus: total function obligation in 'TaskManager' (TaskManager.vdmsl) at line 58:70
+(forall id:TaskId, newStatus:TaskStatus, oldTaskStore:TaskStore, TaskStore:TaskStore &
+  (pre_UpdateStatus(id, newStatus, oldTaskStore) =>
+    is_(post_UpdateStatus(id, newStatus, oldTaskStore, TaskStore), bool)))
+
+Proof Obligation 13: (Unproved)
+UpdateStatus: map apply obligation in 'TaskManager' (TaskManager.vdmsl) at line 56:32
+(forall id:TaskId, newStatus:TaskStatus, mk_TaskStore(tasks, nextId):TaskStore & pre_UpdateStatus(id, newStatus, mk_TaskStore(tasks, nextId)) =>
+  (let tasks$ = tasks, nextId$ = nextId in
+    id in set dom tasks))
+
+Proof Obligation 14: (Unproved)
+UpdateStatus: state invariant obligation in 'TaskManager' (TaskManager.vdmsl) at line 56:3
+(forall id:TaskId, newStatus:TaskStatus, mk_TaskStore(tasks, nextId):TaskStore & pre_UpdateStatus(id, newStatus, mk_TaskStore(tasks, nextId)) =>
+  (let tasks$ = tasks, nextId$ = nextId in
+    (let tasks : map TaskId to Task = (tasks ++ {id |-> mu(tasks(id), status |-> newStatus)}) in
+      let mk_TaskStore(tasks, nextId) = mk_TaskStore!(tasks, nextId) in (forall id in set (dom tasks) & (((tasks(id).id) = id) and (id < nextId))))))
+
+Proof Obligation 15: (Unproved)
+UpdateStatus: operation postcondition obligation in 'TaskManager' (TaskManager.vdmsl) at line 58:70
+(forall id:TaskId, newStatus:TaskStatus, mk_TaskStore(tasks, nextId):TaskStore & pre_UpdateStatus(id, newStatus, mk_TaskStore(tasks, nextId)) =>
+  (let tasks$ = tasks, nextId$ = nextId in
+    (let tasks : map TaskId to Task = (tasks ++ {id |-> mu(tasks(id), status |-> newStatus)}) in
+      ((tasks = (tasks$ ++ {id |-> mu(tasks$(id), status |-> newStatus)})) and (nextId = nextId$)))))
+
+Proof Obligation 16: (Unproved)
+DeleteTask; pre_DeleteTask: total function obligation in 'TaskManager' (TaskManager.vdmsl) at line 65:8
+(forall id:TaskId, oldTaskStore:TaskStore &
+  is_(pre_DeleteTask(id, oldTaskStore), bool))
+
+Proof Obligation 17: (Unproved)
+DeleteTask; post_DeleteTask: total function obligation in 'TaskManager' (TaskManager.vdmsl) at line 66:30
+(forall id:TaskId, oldTaskStore:TaskStore, TaskStore:TaskStore &
+  (pre_DeleteTask(id, oldTaskStore) =>
+    is_(post_DeleteTask(id, oldTaskStore, TaskStore), bool)))
+
+Proof Obligation 18: (Unproved)
+DeleteTask: state invariant obligation in 'TaskManager' (TaskManager.vdmsl) at line 64:3
+(forall id:TaskId, mk_TaskStore(tasks, nextId):TaskStore & pre_DeleteTask(id, mk_TaskStore(tasks, nextId)) =>
+  (let tasks$ = tasks, nextId$ = nextId in
+    (let tasks : map TaskId to Task = ({id} <-: tasks) in
+      let mk_TaskStore(tasks, nextId) = mk_TaskStore!(tasks, nextId) in (forall id in set (dom tasks) & (((tasks(id).id) = id) and (id < nextId))))))
+
+Proof Obligation 19: (Unproved)
+DeleteTask: operation postcondition obligation in 'TaskManager' (TaskManager.vdmsl) at line 66:30
+(forall id:TaskId, mk_TaskStore(tasks, nextId):TaskStore & pre_DeleteTask(id, mk_TaskStore(tasks, nextId)) =>
+  (let tasks$ = tasks, nextId$ = nextId in
+    (let tasks : map TaskId to Task = ({id} <-: tasks) in
+      ((tasks = ({id} <-: tasks$)) and (nextId = nextId$)))))
+
+Proof Obligation 20: (Unproved)
+ListTasks; post_ListTasks: total function obligation in 'TaskManager' (TaskManager.vdmsl) at line 72:21
+(forall RESULT:seq of Task, oldTaskStore:TaskStore, TaskStore:TaskStore &
+  is_(post_ListTasks(RESULT, oldTaskStore, TaskStore), bool))
+
+Proof Obligation 21: (Unproved)
+ListTasks: map apply obligation in 'TaskManager' (TaskManager.vdmsl) at line 71:11
+(forall mk_TaskStore(tasks, nextId):TaskStore &
+  (let tasks$ = tasks, nextId$ = nextId in
+    (forall id in set (dom tasks) &
+      id in set dom tasks)))
+
+Proof Obligation 22: (Unproved)
+ListTasks: operation postcondition obligation in 'TaskManager' (TaskManager.vdmsl) at line 72:21
+(forall mk_TaskStore(tasks, nextId):TaskStore &
+  (let tasks$ = tasks, nextId$ = nextId in
+    (let RESULT : seq of (Task) = [tasks(id) | id in set (dom tasks)] in
+      ((tasks = tasks$) and ((nextId = nextId$) and (((elems (RESULT)) = (rng tasks$)) and (((len RESULT) = (card (dom tasks$))) and (forall i in set (inds RESULT) & ((i > 1) => ((RESULT((i - 1)).id) < (RESULT(i).id)))))))))))
+
+Analysed 1 module in 0.055 secs. No POG errors
+Bye

@@ -1,0 +1,2 @@
+unsat
+Assumptions only (z3py, all assertions except final negated goal): sat

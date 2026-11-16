@@ -1,0 +1,13 @@
+JAVA_HOME=[]
+$ ls *.vdmsl
+TaskManager.vdmsl
+$ java -version
+The operation couldn’t be completed. Unable to locate a Java Runtime.
+Please visit http://www.java.com for information on installing Java.
+
+exit=1
+$ command -v java
+/usr/bin/java
+exit=0
+$ command -v vdmj.sh
+exit=1

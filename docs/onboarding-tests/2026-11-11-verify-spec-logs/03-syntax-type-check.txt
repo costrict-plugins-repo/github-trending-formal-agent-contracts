@@ -1,0 +1,4 @@
+Parsed 1 module in 0.024 secs. No syntax errors
+Type checked 1 module in 0.047 secs. No type errors
+Completed 1 module in 0.024 secs. No completion errors
+Bye

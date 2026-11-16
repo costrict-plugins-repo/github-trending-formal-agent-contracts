@@ -1,0 +1,26 @@
+{
+  "name": "formal-agent-contracts-validation",
+  "version": "2.2.0",
+  "private": true,
+  "description": "Reproducible development checks for the Formal Agent Contracts skills and examples",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "npm run lint:docs && npm run lint:install && npm run test:eval && npm run test:example",
+    "lint:docs": "node scripts/lint-docs.mjs",
+    "lint:install": "node scripts/lint-install-block.mjs",
+    "check:vdmsl": "node scripts/check-skill-vdmsl.mjs",
+    "test:example": "node examples/task-manager/run-tests.cjs",
+    "test:eval": "node --test eval/scripts/mutation-test-runner.test.js",
+    "eval:mutate": "node eval/scripts/mutation-test-runner.js"
+  },
+  "devDependencies": {
+    "@types/jest": "30.0.0",
+    "@types/node": "22.20.5",
+    "jest": "30.5.2",
+    "jest-environment-node": "30.5.2",
+    "ts-jest": "29.4.14",
+    "typescript": "5.9.3"
+  }
+}

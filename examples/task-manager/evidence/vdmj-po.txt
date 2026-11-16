@@ -1,0 +1,245 @@
+Parsed 1 module in 0.027 secs. No syntax errors
+Warning 5000: Definition 'FilterByStatus' not used in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 44:3
+Warning 5000: Definition 'FilterByPriority' not used in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 49:3
+Warning 5000: Definition 'GetAssignedTasks' not used in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 59:3
+Warning 5000: Definition 'CreateTask' not used in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 65:3
+Warning 5000: Definition 'ChangeStatus' not used in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 83:3
+Warning 5000: Definition 'UpdateTask' not used in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 97:3
+Warning 5000: Definition 'DeleteTask' not used in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 111:3
+Warning 5000: Definition 'GetSummary' not used in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 119:3
+Type checked 1 module in 0.051 secs. No type errors and 8 warnings
+Generated 37 proof obligations:
+
+Proof Obligation 1: (Unproved)
+Task: total function obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 18:7
+(forall t:Task! &
+  is_(inv_Task(t), bool))
+
+Proof Obligation 2: (Unproved)
+Task: invariant satisfiability obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 18:7
+exists t : Task & (((len (t.title)) <= 100) and ((len (t.desc)) <= 500))
+
+Proof Obligation 3: (Unproved)
+TaskBoard: total function obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 21:7
+(forall board:TaskBoard! &
+  is_(inv_TaskBoard(board), bool))
+
+Proof Obligation 4: (Unproved)
+TaskBoard: map apply obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 21:45
+(forall board:TaskBoard! &
+  (forall id in set (dom board) &
+    id in set dom board))
+
+Proof Obligation 5: (Unproved)
+TaskBoard: invariant satisfiability obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 21:7
+exists board : map TaskId to Task & (forall id in set (dom board) & ((board(id).id) = id))
+
+Proof Obligation 6: (Unproved)
+TaskManagerState: total function obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 26:5
+(forall mk_TaskManagerState(board, nextId):TaskManagerState! &
+  is_(inv_TaskManagerState(mk_TaskManagerState!(board, nextId)), bool))
+
+Proof Obligation 7: (Unproved)
+TaskManagerState: invariant satisfiability obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 26:5
+exists mk_TaskManagerState(board, nextId) : TaskManagerState & ((forall id in set (dom board) & (id < nextId)) and (nextId >= 1))
+
+Proof Obligation 8: (Unproved)
+TaskManagerState: state init obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 29:6
+exists s : TaskManagerState & (s = mk_TaskManagerState({|->}, 1))
+
+Proof Obligation 9: (Unproved)
+FilterByStatus: map apply obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 46:6
+(forall board:TaskBoard, s:Status &
+  (forall id in set (dom board) & ((board(id).status) = s) =>
+    id in set dom board))
+
+Proof Obligation 10: (Unproved)
+FilterByStatus: map apply obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 46:40
+(forall board:TaskBoard, s:Status &
+  (forall id in set (dom board) &
+    id in set dom board))
+
+Proof Obligation 11: (Unproved)
+FilterByPriority: map apply obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 51:6
+(forall board:TaskBoard, p:Priority &
+  (forall id in set (dom board) & ((board(id).priority) = p) =>
+    id in set dom board))
+
+Proof Obligation 12: (Unproved)
+FilterByPriority: map apply obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 51:40
+(forall board:TaskBoard, p:Priority &
+  (forall id in set (dom board) &
+    id in set dom board))
+
+Proof Obligation 13: (Unproved)
+CountByStatus: map apply obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 56:38
+(forall board:TaskBoard, s:Status &
+  (forall id in set (dom board) &
+    id in set dom board))
+
+Proof Obligation 14: (Unproved)
+GetAssignedTasks: map apply obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 61:6
+(forall board:TaskBoard, person:seq1 of char &
+  (forall id in set (dom board) & ((board(id).assignee) = person) =>
+    id in set dom board))
+
+Proof Obligation 15: (Unproved)
+GetAssignedTasks: map apply obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 61:40
+(forall board:TaskBoard, person:seq1 of char &
+  (forall id in set (dom board) &
+    id in set dom board))
+
+Proof Obligation 16: (Unproved)
+CreateTask; pre_CreateTask: total function obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 76:24
+(forall title:seq1 of char, desc:seq of char, priority:Priority, assignee:[seq1 of char], oldTaskManagerState:TaskManagerState &
+  is_(pre_CreateTask(title, desc, priority, assignee, oldTaskManagerState), bool))
+
+Proof Obligation 17: (Unproved)
+CreateTask; post_CreateTask: total function obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 77:25
+(forall title:seq1 of char, desc:seq of char, priority:Priority, assignee:[seq1 of char], RESULT:TaskId, oldTaskManagerState:TaskManagerState, TaskManagerState:TaskManagerState &
+  (pre_CreateTask(title, desc, priority, assignee, oldTaskManagerState) =>
+    is_(post_CreateTask(title, desc, priority, assignee, RESULT, oldTaskManagerState, TaskManagerState), bool)))
+
+Proof Obligation 18: (Unproved)
+CreateTask: map compatible obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 71:16
+(forall title:seq1 of char, desc:seq of char, priority:Priority, assignee:[seq1 of char], mk_TaskManagerState(board, nextId):TaskManagerState & pre_CreateTask(title, desc, priority, assignee, mk_TaskManagerState(board, nextId)) =>
+  (let nextId$ = nextId in
+    (let newId : TaskId = nextId, newTask : Task = mk_Task(newId, title, desc, <Todo>, priority, assignee) in
+      forall ldom1 in set dom board, rdom2 in set dom {newId |-> newTask} & ldom1 = rdom2 => board(ldom1) = {newId |-> newTask}(rdom2))))
+
+Proof Obligation 19: (Unproved)
+CreateTask: subtype obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 71:22
+(forall title:seq1 of char, desc:seq of char, priority:Priority, assignee:[seq1 of char], mk_TaskManagerState(board, nextId):TaskManagerState & pre_CreateTask(title, desc, priority, assignee, mk_TaskManagerState(board, nextId)) =>
+  (let nextId$ = nextId in
+    (let newId : TaskId = nextId, newTask : Task = mk_Task(newId, title, desc, <Todo>, priority, assignee) in
+      inv_TaskBoard((board munion {newId |-> newTask})))))
+
+Proof Obligation 20: (Unproved)
+CreateTask: state invariant obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 71:7
+(forall title:seq1 of char, desc:seq of char, priority:Priority, assignee:[seq1 of char], mk_TaskManagerState(board, nextId):TaskManagerState & pre_CreateTask(title, desc, priority, assignee, mk_TaskManagerState(board, nextId)) =>
+  (let nextId$ = nextId in
+    (let newId : TaskId = nextId, newTask : Task = mk_Task(newId, title, desc, <Todo>, priority, assignee) in
+      (let $atomic1 : TaskBoard = (board munion {newId |-> newTask}) in
+        (let $atomic2 : TaskId = (nextId + 1) in
+          (let board : TaskBoard = $atomic1 in
+            (let nextId : TaskId = $atomic2 in
+              let mk_TaskManagerState(board, nextId) = mk_TaskManagerState!(board, nextId) in ((forall id in set (dom board) & (id < nextId)) and (nextId >= 1)))))))))
+
+Proof Obligation 21: (Unproved)
+CreateTask: operation postcondition obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 77:25
+(forall title:seq1 of char, desc:seq of char, priority:Priority, assignee:[seq1 of char], mk_TaskManagerState(board, nextId):TaskManagerState & pre_CreateTask(title, desc, priority, assignee, mk_TaskManagerState(board, nextId)) =>
+  (let nextId$ = nextId in
+    (let newId : TaskId = nextId, newTask : Task = mk_Task(newId, title, desc, <Todo>, priority, assignee) in
+      (let $atomic1 : TaskBoard = (board munion {newId |-> newTask}) in
+        (let $atomic2 : TaskId = (nextId + 1) in
+          (let board : TaskBoard = $atomic1 in
+            (let nextId : TaskId = $atomic2 in
+              (let RESULT : TaskId = newId in
+                ((RESULT = nextId$) and ((RESULT in set (dom board)) and (((board(RESULT).title) = title) and ((board(RESULT).status) = <Todo>))))))))))))
+
+Proof Obligation 22: (Unproved)
+ChangeStatus; pre_ChangeStatus: total function obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 91:31
+(forall taskId:TaskId, newStatus:Status, oldTaskManagerState:TaskManagerState &
+  is_(pre_ChangeStatus(taskId, newStatus, oldTaskManagerState), bool))
+
+Proof Obligation 23: (Unproved)
+ChangeStatus; post_ChangeStatus: total function obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 93:41
+(forall taskId:TaskId, newStatus:Status, oldTaskManagerState:TaskManagerState, TaskManagerState:TaskManagerState &
+  (pre_ChangeStatus(taskId, newStatus, oldTaskManagerState) =>
+    is_(post_ChangeStatus(taskId, newStatus, oldTaskManagerState, TaskManagerState), bool)))
+
+Proof Obligation 24: (Unproved)
+ChangeStatus: subtype obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 89:20
+(forall taskId:TaskId, newStatus:Status, mk_TaskManagerState(board, nextId):TaskManagerState & pre_ChangeStatus(taskId, newStatus, mk_TaskManagerState(board, nextId)) =>
+  (let board$ = board in
+    (let task : Task = board(taskId), updated : Task = mk_Task((task.id), (task.title), (task.desc), newStatus, (task.priority), (task.assignee)) in
+      inv_TaskBoard((board ++ {taskId |-> updated})))))
+
+Proof Obligation 25: (Unproved)
+ChangeStatus: state invariant obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 89:5
+(forall taskId:TaskId, newStatus:Status, mk_TaskManagerState(board, nextId):TaskManagerState & pre_ChangeStatus(taskId, newStatus, mk_TaskManagerState(board, nextId)) =>
+  (let board$ = board in
+    (let task : Task = board(taskId), updated : Task = mk_Task((task.id), (task.title), (task.desc), newStatus, (task.priority), (task.assignee)) in
+      (let board : TaskBoard = (board ++ {taskId |-> updated}) in
+        let mk_TaskManagerState(board, nextId) = mk_TaskManagerState!(board, nextId) in ((forall id in set (dom board) & (id < nextId)) and (nextId >= 1))))))
+
+Proof Obligation 26: (Unproved)
+ChangeStatus: operation postcondition obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 93:41
+(forall taskId:TaskId, newStatus:Status, mk_TaskManagerState(board, nextId):TaskManagerState & pre_ChangeStatus(taskId, newStatus, mk_TaskManagerState(board, nextId)) =>
+  (let board$ = board in
+    (let task : Task = board(taskId), updated : Task = mk_Task((task.id), (task.title), (task.desc), newStatus, (task.priority), (task.assignee)) in
+      (let board : TaskBoard = (board ++ {taskId |-> updated}) in
+        (((board(taskId).status) = newStatus) and ((board(taskId).title) = (board$(taskId).title)))))))
+
+Proof Obligation 27: (Unproved)
+UpdateTask; pre_UpdateTask: total function obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 105:31
+(forall taskId:TaskId, title:seq1 of char, desc:seq of char, priority:Priority, assignee:[seq1 of char], oldTaskManagerState:TaskManagerState &
+  is_(pre_UpdateTask(taskId, title, desc, priority, assignee, oldTaskManagerState), bool))
+
+Proof Obligation 28: (Unproved)
+UpdateTask; post_UpdateTask: total function obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 107:36
+(forall taskId:TaskId, title:seq1 of char, desc:seq of char, priority:Priority, assignee:[seq1 of char], oldTaskManagerState:TaskManagerState, TaskManagerState:TaskManagerState &
+  (pre_UpdateTask(taskId, title, desc, priority, assignee, oldTaskManagerState) =>
+    is_(post_UpdateTask(taskId, title, desc, priority, assignee, oldTaskManagerState, TaskManagerState), bool)))
+
+Proof Obligation 29: (Unproved)
+UpdateTask: subtype obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 103:20
+(forall taskId:TaskId, title:seq1 of char, desc:seq of char, priority:Priority, assignee:[seq1 of char], mk_TaskManagerState(board, nextId):TaskManagerState & pre_UpdateTask(taskId, title, desc, priority, assignee, mk_TaskManagerState(board, nextId)) =>
+  (let board$ = board in
+    (let task : Task = board(taskId), updated : Task = mk_Task((task.id), title, desc, (task.status), priority, assignee) in
+      inv_TaskBoard((board ++ {taskId |-> updated})))))
+
+Proof Obligation 30: (Unproved)
+UpdateTask: state invariant obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 103:5
+(forall taskId:TaskId, title:seq1 of char, desc:seq of char, priority:Priority, assignee:[seq1 of char], mk_TaskManagerState(board, nextId):TaskManagerState & pre_UpdateTask(taskId, title, desc, priority, assignee, mk_TaskManagerState(board, nextId)) =>
+  (let board$ = board in
+    (let task : Task = board(taskId), updated : Task = mk_Task((task.id), title, desc, (task.status), priority, assignee) in
+      (let board : TaskBoard = (board ++ {taskId |-> updated}) in
+        let mk_TaskManagerState(board, nextId) = mk_TaskManagerState!(board, nextId) in ((forall id in set (dom board) & (id < nextId)) and (nextId >= 1))))))
+
+Proof Obligation 31: (Unproved)
+UpdateTask: operation postcondition obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 107:36
+(forall taskId:TaskId, title:seq1 of char, desc:seq of char, priority:Priority, assignee:[seq1 of char], mk_TaskManagerState(board, nextId):TaskManagerState & pre_UpdateTask(taskId, title, desc, priority, assignee, mk_TaskManagerState(board, nextId)) =>
+  (let board$ = board in
+    (let task : Task = board(taskId), updated : Task = mk_Task((task.id), title, desc, (task.status), priority, assignee) in
+      (let board : TaskBoard = (board ++ {taskId |-> updated}) in
+        (((board(taskId).title) = title) and ((board(taskId).status) = (board$(taskId).status)))))))
+
+Proof Obligation 32: (Unproved)
+DeleteTask; pre_DeleteTask: total function obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 114:14
+(forall taskId:TaskId, oldTaskManagerState:TaskManagerState &
+  is_(pre_DeleteTask(taskId, oldTaskManagerState), bool))
+
+Proof Obligation 33: (Unproved)
+DeleteTask; post_DeleteTask: total function obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 115:36
+(forall taskId:TaskId, oldTaskManagerState:TaskManagerState, TaskManagerState:TaskManagerState &
+  (pre_DeleteTask(taskId, oldTaskManagerState) =>
+    is_(post_DeleteTask(taskId, oldTaskManagerState, TaskManagerState), bool)))
+
+Proof Obligation 34: (Unproved)
+DeleteTask: state invariant obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 113:5
+(forall taskId:TaskId, mk_TaskManagerState(board, nextId):TaskManagerState & pre_DeleteTask(taskId, mk_TaskManagerState(board, nextId)) =>
+  (let board$ = board in
+    (let board : TaskBoard = ({taskId} <-: board) in
+      let mk_TaskManagerState(board, nextId) = mk_TaskManagerState!(board, nextId) in ((forall id in set (dom board) & (id < nextId)) and (nextId >= 1)))))
+
+Proof Obligation 35: (Unproved)
+DeleteTask: operation postcondition obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 115:36
+(forall taskId:TaskId, mk_TaskManagerState(board, nextId):TaskManagerState & pre_DeleteTask(taskId, mk_TaskManagerState(board, nextId)) =>
+  (let board$ = board in
+    (let board : TaskBoard = ({taskId} <-: board) in
+      ((taskId not in set (dom board)) and ((card (dom board)) = ((card (dom board$)) - 1))))))
+
+Proof Obligation 36: (Unproved)
+GetSummary; post_GetSummary: total function obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 124:8
+(forall RESULT:(nat) * (nat) * (nat), oldTaskManagerState:TaskManagerState, TaskManagerState:TaskManagerState &
+  is_(post_GetSummary(RESULT, oldTaskManagerState, TaskManagerState), bool))
+
+Proof Obligation 37: (Unproved)
+GetSummary: operation postcondition obligation in 'TaskManager' (examples/task-manager/TaskManager.vdmsl) at line 124:8
+(forall mk_TaskManagerState(board, nextId):TaskManagerState &
+  (let RESULT : (nat * nat * nat) = mk_(CountByStatus(board, <Todo>), CountByStatus(board, <InProgress>), CountByStatus(board, <Done>)) in
+    let mk_(t, i, d) : (nat) * (nat) * (nat) = RESULT in (((t + i) + d) = (card (dom board)))))
+
+Analysed 1 module in 0.059 secs. No POG errors
+Bye

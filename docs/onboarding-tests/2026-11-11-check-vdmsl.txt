@@ -1,0 +1,48 @@
+
+> formal-agent-contracts-validation@2.2.0 check:vdmsl
+> node scripts/check-skill-vdmsl.mjs --require
+
+check-skill-vdmsl: VDMJ 4.7.0 build 260414 / openjdk version "17.0.20.1" 2026-08-18 (JAVA_HOME=<java-home>)
+check-skill-vdmsl: syntax + type check only (no proof obligations, no QuickCheck) on 76 of 82 VDM-SL block(s) in 14 of 37 Markdown file(s)
+
+skipped by marker (not checked):
+skills/route-models/references/routing-rules.md:175: schematic outline: module bodies are elided with ...
+
+syntax check only, by marker (type errors ignored):
+skills/extract-spec/references/code-to-vdmsl-mapping.md:176: uses User from the Interface Mapping block above
+skills/extract-spec/references/code-to-vdmsl-mapping.md:187: uses User from the Interface Mapping block above
+skills/extract-spec/references/code-to-vdmsl-mapping.md:214: uses User from the Interface Mapping block above
+skills/extract-spec/references/code-to-vdmsl-mapping.md:390: uses User from the Interface Mapping block above
+skills/extract-spec/references/code-to-vdmsl-mapping.md:411: uses User from the Interface Mapping block above
+skills/extract-spec/references/code-to-vdmsl-mapping.md:433: uses User from the Interface Mapping block above
+skills/extract-spec/references/code-to-vdmsl-mapping.md:454: uses User from the Interface Mapping block above
+skills/extract-spec/references/code-to-vdmsl-mapping.md:685: UserData stands for the record extracted from the TypeScript type of the same name
+skills/extract-spec/references/code-to-vdmsl-mapping.md:708: MessageContent is a type extracted separately
+skills/extract-spec/references/code-to-vdmsl-mapping.md:735: uses User and the users state from the Class Mapping example
+skills/extract-spec/references/code-to-vdmsl-mapping.md:759: uses User from the Interface Mapping block above
+skills/extract-spec/references/code-to-vdmsl-mapping.md:786: uses the users state from the Class Mapping example
+skills/extract-spec/references/code-to-vdmsl-mapping.md:806: uses User and the users state from the Class Mapping example
+skills/extract-spec/references/code-to-vdmsl-mapping.md:826: Item and the items state belong to the surrounding extracted spec
+skills/extract-spec/references/code-to-vdmsl-mapping.md:851: users and cache_invalidated are state components of the surrounding extracted spec
+skills/extract-spec/references/code-to-vdmsl-mapping.md:1038: uses User from the Interface Mapping block; valid_ids and user_with_id are placeholders for the remote data
+skills/extract-spec/references/code-to-vdmsl-mapping.md:1050: uses User from the Interface Mapping block; valid_ids and user_with_id are placeholders for the remote data
+skills/extract-spec/references/code-to-vdmsl-mapping.md:1112: uses User from the Interface Mapping block above
+skills/extract-spec/references/code-to-vdmsl-mapping.md:1158: uses User, UserData and the users state from earlier sections; applyUpdate and isValidUpdate are helpers extracted separately
+skills/formal-methods-guide/references/vdm-sl-syntax.md:6: schematic skeleton: OtherModule, TypeName and funcName are placeholders
+skills/formal-methods-guide/references/vdm-sl-syntax.md:94: uses User and UserId from the type blocks above
+skills/formal-methods-guide/references/vdm-sl-syntax.md:117: uses Email, UserId and User from the type blocks above and a state with users and nextId
+
+skill                 blocks  checked  passed  failed  (syntax-only)  skipped-by-marker  not-checked-fragments  marker-problems
+define-contract           13       13      13       0              0                  0                      0                0
+extract-spec              37       37      37       0             19                  0                      0                0
+formal-methods-guide      17       12      12       0              3                  0                      5                0
+generate-code              2        2       2       0              0                  0                      0                0
+generate-tests             6        6       6       0              0                  0                      0                0
+import-natural-spec        1        1       1       0              0                  0                      0                0
+refine-spec                2        2       2       0              0                  0                      0                0
+route-models               1        0       0       0              0                  1                      0                0
+verify-spec                3        3       3       0              0                  0                      0                0
+-------------------------------------------------------------------------------------------------------------------------------
+total                     82       76      76       0             22                  1                      5                0
+
+check-skill-vdmsl: checked 76 (22 syntax-only), passed 76, failed 0, skipped-by-marker 1, not-checked-fragments 5, marker-problems 0. OK

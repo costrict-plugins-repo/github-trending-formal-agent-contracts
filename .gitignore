@@ -1,0 +1,8 @@
+.DS_Store
+*.plugin
+node_modules/
+.env
+*.class
+*.jar
+eval/artifacts/
+.claude/

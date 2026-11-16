@@ -1,0 +1,43 @@
+## A. with Java, via PATH as the setup doc writes it: export PATH="$PATH:<suite dir>"; vdmj.sh -help
+<vdmj-root>/vdmj-suite-4.7.0/vdmj.sh
+Usage: VDMJ [-vdmsl | -vdmpp | -vdmrt] [<options>] [<files or dirs>]
+-vdmsl: parse files as VDM-SL (default)
+-vdmpp: parse files as VDM++
+-vdmrt: parse files as VDM-RT
+-verbose: display detailed startup information
+-path: search path for files
+-v: show VDMJ jar version
+-r <release>: VDM language release
+exit=0
+
+## B. with Java, no arguments
+Usage: vdmj.sh [-help] <VM and VDMJ options>
+exit=0
+
+## C. WITHOUT Java, real distribution script by absolute path: vdmj.sh -help
+The operation couldn’t be completed. Unable to locate a Java Runtime.
+Please visit http://www.java.com for information on installing Java.
+
+exit=1
+
+## D. WITHOUT Java in the shell, the wrapper in vdmj-suite-4.7.0-260414 (sets JAVA_HOME itself): -v
+VDMJ version = 4.7.0 build 260414
+exit=0
+## E. setup doc line 30 run from a directory that does not hold the zip (zsh)
+zsh:1: no matches found: vdmj-suite-*-distribution.zip
+exit=1
+
+## F. setup doc 'java -jar vdmj.jar -vdmsl file' run from the project directory (jar was saved to ~/.vdmj/vdmj.jar by the doc)
+Error: Unable to access jarfile vdmj.jar
+exit=1
+
+## G. real vdmj.sh when 'which' is not installed (simulated PATH with only java+dirname+basename)
+<vdmj-root>/vdmj-suite-4.7.0/vdmj.sh: line 39: which: command not found
+エラー: メイン・クラスVDMJを検出およびロードできませんでした
+原因: java.lang.ClassNotFoundException: VDMJ
+exit=1
+
+## H. real vdmj.sh reached through a directory whose name contains a space
+エラー: メイン・クラスdir.vdmj-4.7.0.jar:<trial-root-dotted>..simを検出およびロードできませんでした
+原因: java.lang.ClassNotFoundException: dir/vdmj-4/7/0/jar:<trial-root>//sim
+exit=1

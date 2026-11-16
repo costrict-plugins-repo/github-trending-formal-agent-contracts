@@ -1,0 +1,90 @@
+Parsed 1 module in 0.026 secs. No syntax errors
+Warning 5000: Definition 'FilterByStatus' not used in 'TaskManager' (/var/folders/jx/dzhdxgd50m567ttdsc788k_80000gn/T/fac-seed-offbyone-74625/TaskManager.vdmsl) at line 44:3
+Warning 5000: Definition 'FilterByPriority' not used in 'TaskManager' (/var/folders/jx/dzhdxgd50m567ttdsc788k_80000gn/T/fac-seed-offbyone-74625/TaskManager.vdmsl) at line 49:3
+Warning 5000: Definition 'GetAssignedTasks' not used in 'TaskManager' (/var/folders/jx/dzhdxgd50m567ttdsc788k_80000gn/T/fac-seed-offbyone-74625/TaskManager.vdmsl) at line 59:3
+Warning 5000: Definition 'CreateTask' not used in 'TaskManager' (/var/folders/jx/dzhdxgd50m567ttdsc788k_80000gn/T/fac-seed-offbyone-74625/TaskManager.vdmsl) at line 65:3
+Warning 5000: Definition 'ChangeStatus' not used in 'TaskManager' (/var/folders/jx/dzhdxgd50m567ttdsc788k_80000gn/T/fac-seed-offbyone-74625/TaskManager.vdmsl) at line 83:3
+Warning 5000: Definition 'UpdateTask' not used in 'TaskManager' (/var/folders/jx/dzhdxgd50m567ttdsc788k_80000gn/T/fac-seed-offbyone-74625/TaskManager.vdmsl) at line 97:3
+Warning 5000: Definition 'DeleteTask' not used in 'TaskManager' (/var/folders/jx/dzhdxgd50m567ttdsc788k_80000gn/T/fac-seed-offbyone-74625/TaskManager.vdmsl) at line 111:3
+Warning 5000: Definition 'GetSummary' not used in 'TaskManager' (/var/folders/jx/dzhdxgd50m567ttdsc788k_80000gn/T/fac-seed-offbyone-74625/TaskManager.vdmsl) at line 119:3
+Type checked 1 module in 0.05 secs. No type errors and 8 warnings
+Initialized 1 module in 0.064 secs. No init errors
+PO #1, PROVABLE by direct (body is total) in 0.003s
+PO #2, PROVABLE by witness in 0.001s
+Witness:
+Task: invariant satisfiability obligation in 'TaskManager' (/var/folders/jx/dzhdxgd50m567ttdsc788k_80000gn/T/fac-seed-offbyone-74625/TaskManager.vdmsl) at line 18:7
+exists t : Task & (((len (t.title)) <= 100) and ((len (t.desc)) <= 500))
+--> t = mk_Task(1, "a", [], <Done>, <High>, nil)
+--> returns true
+
+PO #3, MAYBE in 0.001s
+PO #4, PROVABLE by trivial id in set (dom board) in 0.001s
+PO #5, PROVABLE by witness in 0.001s
+Witness:
+TaskBoard: invariant satisfiability obligation in 'TaskManager' (/var/folders/jx/dzhdxgd50m567ttdsc788k_80000gn/T/fac-seed-offbyone-74625/TaskManager.vdmsl) at line 21:7
+exists board : map TaskId to Task & (forall id in set (dom board) & ((board(id).id) = id))
+--> board = {|->}
+--> returns true
+
+PO #6, PROVABLE by direct (body is total) in 0.0s
+PO #7, PROVABLE by witness in 0.001s
+Witness:
+TaskManagerState: invariant satisfiability obligation in 'TaskManager' (/var/folders/jx/dzhdxgd50m567ttdsc788k_80000gn/T/fac-seed-offbyone-74625/TaskManager.vdmsl) at line 26:5
+exists mk_TaskManagerState(board, nextId) : TaskManagerState & ((forall id in set (dom board) & (id < nextId)) and (nextId >= 1))
+--> board = {|->}, nextId = 1
+--> returns true
+
+PO #8, PROVABLE by witness in 0.001s
+Witness:
+TaskManagerState: state init obligation in 'TaskManager' (/var/folders/jx/dzhdxgd50m567ttdsc788k_80000gn/T/fac-seed-offbyone-74625/TaskManager.vdmsl) at line 29:6
+exists s : TaskManagerState & (s = mk_TaskManagerState({|->}, 1))
+--> s = mk_TaskManagerState({|->}, 1)
+--> returns true
+
+PO #9, MAYBE in 0.001s
+PO #10, PROVABLE by trivial id in set (dom board) in 0.0s
+PO #11, MAYBE in 0.001s
+PO #12, PROVABLE by trivial id in set (dom board) in 0.001s
+PO #13, PROVABLE by trivial id in set (dom board) in 0.0s
+PO #14, MAYBE in 0.001s
+PO #15, PROVABLE by trivial id in set (dom board) in 0.001s
+PO #16, PROVABLE by direct (body is total) in 0.0s
+PO #17, TIMEOUT in 5.011s
+PO #18, MAYBE in 0.337s
+PO #19, MAYBE in 0.34s
+PO #20, MAYBE in 0.572s
+PO #21, FAILED in 0.002s
+Counterexample:
+CreateTask: operation postcondition obligation in 'TaskManager' (/var/folders/jx/dzhdxgd50m567ttdsc788k_80000gn/T/fac-seed-offbyone-74625/TaskManager.vdmsl) at line 77:29
+(forall title:seq1 of char, desc:seq of char, priority:Priority, assignee:[seq1 of char], mk_TaskManagerState(board, nextId):TaskManagerState & pre_CreateTask(title, desc, priority, assignee, mk_TaskManagerState(board, nextId)) =>
+ --> desc = [], priority = <High>, assignee = "a", board = {|->}, nextId = 1, title = "a"
+  (let nextId$ = nextId in
+    (let newId : TaskId = nextId, newTask : Task = mk_Task(newId, title, desc, <Todo>, priority, assignee) in
+      (let $atomic1 : TaskBoard = (board munion {newId |-> newTask}) in
+        (let $atomic2 : TaskId = (nextId + 1) in
+          (let board : TaskBoard = $atomic1 in
+            (let nextId : TaskId = $atomic2 in
+              (let RESULT : TaskId = newId in
+                ((RESULT = (nextId$ - 1)) and ((RESULT in set (dom board)) and (((board(RESULT).title) = title) and ((board(RESULT).status) = <Todo>))))))))))))
+                --> returns false
+
+PO #22, MAYBE in 0.0s
+PO #23, MAYBE in 0.001s
+PO #24, MAYBE in 0.001s
+PO #25, MAYBE in 0.001s
+Note: does not check nextId?
+PO #26, MAYBE in 0.001s
+PO #27, PROVABLE by direct (body is total) in 0.0s
+PO #28, TIMEOUT in 5.011s
+PO #29, MAYBE in 3.132s
+PO #30, MAYBE in 3.593s
+Note: does not check nextId?
+PO #31, MAYBE in 3.125s
+PO #32, PROVABLE by direct (body is total) in 0.0s
+PO #33, PROVABLE by direct (body is total) in 0.0s
+PO #34, MAYBE in 0.0s
+Note: does not check nextId?
+PO #35, MAYBE in 0.001s
+PO #36, PROVABLE by direct (body is total) in 0.0s
+PO #37, MAYBE in 0.0s
+Bye

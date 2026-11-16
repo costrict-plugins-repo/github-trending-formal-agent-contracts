@@ -1,0 +1,13 @@
+
+> test
+> vitest run
+
+
+ RUN  v5.1.0 <trial-root>
+
+
+ Test Files  1 passed (1)
+      Tests  52 passed (52)
+   Start at  01:29:37
+   Duration  81ms (import 37%, tests 30%, transform 20%, worker 13%)
+

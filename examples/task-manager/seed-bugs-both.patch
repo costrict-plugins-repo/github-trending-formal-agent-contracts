@@ -1,0 +1,26 @@
+# Seeded bugs: the two defects fixed in commit 0045ff1 (apply to a COPY):
+#   patch -p1 <copy> -i examples/task-manager/seed-bugs-both.patch
+# 1. CreateTask post-condition off-by-one (RESULT = nextId~ - 1)
+# 2. board/nextId updated outside an atomic block, so the intermediate state
+#    violates the state invariant (forall id in set dom board & id < nextId).
+# VDMJ 4.7.0 QuickCheck then reports two FAILED obligations.
+--- a/TaskManager.vdmsl
++++ b/TaskManager.vdmsl
+@@ -67,14 +67,12 @@ operations
+   (
+     dcl newId : TaskId := nextId;
+     dcl newTask : Task := mk_Task(newId, title, desc, <Todo>, priority, assignee);
+-    atomic (
+-      board := board munion {newId |-> newTask};
+-      nextId := nextId + 1
+-    );
++    board := board munion {newId |-> newTask};
++    nextId := nextId + 1;
+     return newId
+   )
+   pre len title <= 100 and len desc <= 500
+-  post RESULT = nextId~ and
++  post RESULT = nextId~ - 1 and
+        RESULT in set dom board and
+        board(RESULT).title = title and
+        board(RESULT).status = <Todo>;

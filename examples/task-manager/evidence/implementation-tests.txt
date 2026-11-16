@@ -1,0 +1,34 @@
+
+> formal-agent-contracts-validation@2.2.0 test:example
+> node examples/task-manager/run-tests.cjs
+
+✔ create, update, transition, query, delete use the actual implementation (1.21575ms)
+✔ nat1 representation rejects 0 (0.160875ms)
+✔ nat1 representation rejects -1 (0.034959ms)
+✔ nat1 representation rejects 1.5 (0.031666ms)
+✔ nat1 representation rejects NaN (0.042667ms)
+✔ nat1 representation rejects Infinity (0.036167ms)
+✔ nat1 representation rejects -Infinity (0.031083ms)
+✔ nat1 representation rejects 9007199254740992 (0.028792ms)
+✔ record boundaries and optional nonempty assignee are enforced (0.13225ms)
+✔ transition Todo -> Todo (0.097208ms)
+✔ transition Todo -> InProgress (0.057583ms)
+✔ transition Todo -> Done (0.039083ms)
+✔ transition InProgress -> Todo (0.031583ms)
+✔ transition InProgress -> InProgress (0.032125ms)
+✔ transition InProgress -> Done (0.029833ms)
+✔ transition Done -> Todo (0.270916ms)
+✔ transition Done -> InProgress (0.030917ms)
+✔ transition Done -> Done (0.034875ms)
+✔ invalid writes leave both board and nextId unchanged (0.217875ms)
+✔ board invariant checks nested task constraints and key identity (0.043625ms)
+✔ read access cannot mutate manager state or returned task values (0.040708ms)
+✔ query functions reject invalid enum values and invalid nested records (0.090625ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 38.625792

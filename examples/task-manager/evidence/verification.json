@@ -1,0 +1,228 @@
+{
+  "schema_version": 2,
+  "recorded_on": "2026-11-10",
+  "generated_by": "scripts/regenerate-example-evidence.mjs",
+  "environment": {
+    "host": "hikarunoMacBook-Pro.local (darwin 25.5.0, arm64)",
+    "note": "Author machine. Tools installed user-locally under ~/.vdmj (Temurin JDK tarball, VDMJ suite zip, z3 via pip venv). Re-run with the same script on a clean container to cross-check.",
+    "java": "openjdk version \"17.0.20.1\" 2026-08-18 (JAVA_HOME=/Users/hikaru/.vdmj/jdk/Contents/Home)",
+    "vdmj": "4.7.0 build 260414",
+    "vdmj_launcher": "/Users/hikaru/.vdmj/suite-extract/vdmj-suite-4.7.0-260414/vdmj.sh",
+    "z3": "Z3 version 5.1.0 - 64 bit",
+    "node": "v26.4.0"
+  },
+  "spec": {
+    "path": "examples/task-manager/TaskManager.vdmsl",
+    "sha256": "9ebb9c7c44daba94d7b1684f8b204248891aad0679a5dea98a7c876f4c5f45be"
+  },
+  "vdmj": {
+    "version": "4.7.0 build 260414",
+    "command": [
+      "vdmj.sh",
+      "-vdmsl",
+      "examples/task-manager/TaskManager.vdmsl",
+      "-p"
+    ],
+    "exit_code": 0,
+    "syntax_type_check": "passed",
+    "po_count": 37,
+    "log": "examples/task-manager/evidence/vdmj-po.txt",
+    "quickcheck": {
+      "command": [
+        "vdmj.sh",
+        "-vdmsl",
+        "examples/task-manager/TaskManager.vdmsl",
+        "-cmd",
+        "qc"
+      ],
+      "exit_code": 0,
+      "PROVABLE": 16,
+      "MAYBE": 19,
+      "FAILED": 0,
+      "TIMEOUT": 2,
+      "failed_pos": [],
+      "log": "examples/task-manager/evidence/vdmj-qc.txt"
+    }
+  },
+  "seeded_variants": [
+    {
+      "name": "offbyone",
+      "patch": "examples/task-manager/seed-bug.patch",
+      "patch_sha256": "0c7ee131a6c1b3195f7f213ab8b119f535f3e33ebd58f0cfedb88def95eab6e5",
+      "description": "CreateTask post-condition off-by-one only (RESULT = nextId~ - 1). The variant shown in the LT slides / Zenn article.",
+      "command": [
+        "(apply",
+        "examples/task-manager/seed-bug.patch",
+        "to a copy of",
+        "examples/task-manager/TaskManager.vdmsl",
+        "then)",
+        "vdmj.sh",
+        "-vdmsl",
+        "<copy>",
+        "-p"
+      ],
+      "exit_code": 0,
+      "syntax_type_check": "passed",
+      "po_count": 37,
+      "log": "examples/task-manager/evidence/vdmj-po-seeded-offbyone.txt",
+      "quickcheck": {
+        "command": [
+          "vdmj.sh",
+          "-vdmsl",
+          "<copy>",
+          "-cmd",
+          "qc"
+        ],
+        "exit_code": 0,
+        "PROVABLE": 16,
+        "MAYBE": 18,
+        "FAILED": 1,
+        "TIMEOUT": 2,
+        "failed_pos": [
+          21
+        ],
+        "log": "examples/task-manager/evidence/vdmj-qc-seeded-offbyone.txt"
+      }
+    },
+    {
+      "name": "both",
+      "patch": "examples/task-manager/seed-bugs-both.patch",
+      "patch_sha256": "7efa776e277b57f4668f23367c0acbe19ccbeacce5d1b9096398159fae97e8af",
+      "description": "Both bugs fixed in commit 0045ff1: the off-by-one above plus the non-atomic board/nextId update (intermediate state violates the state invariant).",
+      "command": [
+        "(apply",
+        "examples/task-manager/seed-bugs-both.patch",
+        "to a copy of",
+        "examples/task-manager/TaskManager.vdmsl",
+        "then)",
+        "vdmj.sh",
+        "-vdmsl",
+        "<copy>",
+        "-p"
+      ],
+      "exit_code": 0,
+      "syntax_type_check": "passed",
+      "po_count": 38,
+      "log": "examples/task-manager/evidence/vdmj-po-seeded-both.txt",
+      "quickcheck": {
+        "command": [
+          "vdmj.sh",
+          "-vdmsl",
+          "<copy>",
+          "-cmd",
+          "qc"
+        ],
+        "exit_code": 0,
+        "PROVABLE": 16,
+        "MAYBE": 18,
+        "FAILED": 2,
+        "TIMEOUT": 2,
+        "failed_pos": [
+          20,
+          22
+        ],
+        "log": "examples/task-manager/evidence/vdmj-qc-seeded-both.txt"
+      }
+    }
+  ],
+  "z3_version": "Z3 version 5.1.0 - 64 bit",
+  "smt_checks": [
+    {
+      "subject": "examples/task-manager/smt/po27-changestatus-postcond.smt2",
+      "sha256": "6f1590e58f061e46cd1918b36a08a38d7b965bf55333ff7cce85eef057b8ffde",
+      "exit_code": 0,
+      "raw_verdict": "unsat",
+      "expected_verdict": "unsat",
+      "status": "passed",
+      "scope": "Submitted hand-written SMT formula only",
+      "source_correspondence": "unverified",
+      "assumptions_status": "sat",
+      "assumptions_scope": "All asserted constraints except the final negated goal",
+      "log": "examples/task-manager/evidence/po27-changestatus-postcond.txt",
+      "command": [
+        "z3",
+        "-T:30",
+        "examples/task-manager/smt/po27-changestatus-postcond.smt2"
+      ]
+    },
+    {
+      "subject": "examples/task-manager/smt/po36-delete-postcond.smt2",
+      "sha256": "ff0ecb6295c6ea0e7cce4a30ba9e78c29e16765d159becd7b8c711bc9fdfda4a",
+      "exit_code": 0,
+      "raw_verdict": "unsat",
+      "expected_verdict": "unsat",
+      "status": "passed",
+      "scope": "Submitted hand-written SMT formula only",
+      "source_correspondence": "unverified",
+      "assumptions_status": "sat",
+      "assumptions_scope": "All asserted constraints except the final negated goal",
+      "log": "examples/task-manager/evidence/po36-delete-postcond.txt",
+      "command": [
+        "z3",
+        "-T:30",
+        "examples/task-manager/smt/po36-delete-postcond.smt2"
+      ]
+    },
+    {
+      "subject": "examples/task-manager/smt/po8-state-init.smt2",
+      "sha256": "ee81913239e2b97a5c4dc01409003b217c439c51270faf1e08d4553005537f18",
+      "exit_code": 0,
+      "raw_verdict": "unsat",
+      "expected_verdict": "unsat",
+      "status": "passed",
+      "scope": "Submitted hand-written SMT formula only",
+      "source_correspondence": "unverified",
+      "assumptions_status": "sat",
+      "assumptions_scope": "All asserted constraints except the final negated goal",
+      "log": "examples/task-manager/evidence/po8-state-init.txt",
+      "command": [
+        "z3",
+        "-T:30",
+        "examples/task-manager/smt/po8-state-init.smt2"
+      ]
+    }
+  ],
+  "unverified": [
+    "Semantic correspondence of hand-written SMT samples to full VDMJ POs",
+    "Implementation refinement and universal correctness",
+    "Business requirement completeness",
+    "QuickCheck MAYBE/TIMEOUT obligations are neither proved nor refuted"
+  ],
+  "implementation_tests": {
+    "command": [
+      "npm",
+      "run",
+      "test:example"
+    ],
+    "node": "v26.4.0",
+    "typescript": "5.9.3",
+    "exit_code": 0,
+    "passed": 22,
+    "failed": 0,
+    "status": "passed",
+    "scope": "Finite Node test cases importing shipped TaskManager implementation",
+    "log": "examples/task-manager/evidence/implementation-tests.txt",
+    "inputs": [
+      {
+        "path": "examples/task-manager/generated/task-manager.ts",
+        "sha256": "a97827f56402ea971d0079c18f62fbfa77181dcd86904e68dc7b1cb0e1f016d4"
+      },
+      {
+        "path": "examples/task-manager/generated/test-task-manager.ts",
+        "sha256": "1999dfb2a231bf72f08c61e184907c272211d65be8d507aac1c55fef1112d442"
+      },
+      {
+        "path": "examples/task-manager/run-tests.cjs",
+        "sha256": "95fcdde42971cef9ed8f86dee46148369bddf2ff2bca8de082ad3260b4ed33a2"
+      },
+      {
+        "path": "package.json",
+        "sha256": "4a83421c42109928440b1a8f7c7f1d9d5a1bebe61a247a80c4657f65490146d2"
+      },
+      {
+        "path": "package-lock.json",
+        "sha256": "1415a25065f8a740d277ff28cad5d007d1a79a36557d60c8bd26b36c1426c7fb"
+      }
+    ]
+  }
+}

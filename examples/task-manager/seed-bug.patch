@@ -1,0 +1,16 @@
+# Seeded bug for the counterexample demo (apply to a COPY of TaskManager.vdmsl):
+#   patch -p1 <copy> -i examples/task-manager/seed-bug.patch
+# Re-introduces the CreateTask post-condition off-by-one (RESULT = nextId~ - 1).
+# VDMJ 4.7.0 QuickCheck then reports one FAILED obligation (the CreateTask
+# operation postcondition obligation) with a counterexample at nextId = 1.
+--- a/TaskManager.vdmsl
++++ b/TaskManager.vdmsl
+@@ -74,7 +74,7 @@
+     return newId
+   )
+   pre len title <= 100 and len desc <= 500
+-  post RESULT = nextId~ and
++  post RESULT = nextId~ - 1 and
+        RESULT in set dom board and
+        board(RESULT).title = title and
+        board(RESULT).status = <Todo>;

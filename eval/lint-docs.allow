@@ -1,0 +1,3 @@
+# lint-docs allow-list: one repo-relative `path:line` per line, `#` starts a comment.
+# A hit on an allow-listed path:line is reported as "allowed" and does not fail `node scripts/lint-docs.mjs`.
+# Keep this list minimal; remove entries as the underlying text is rewritten.
